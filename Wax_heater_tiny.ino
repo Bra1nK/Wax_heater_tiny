@@ -13,8 +13,8 @@ Tiny_7segment sevenseg = Tiny_7segment();
 #define led 10 // digital pin 10 (physical pin 2), used as LED indicator
 #define TMP36 1 // analog input 1, for reading TMP36
 #define aref_voltage 5.0 // analog reference voltage
-#define timeLimit 3600000 // value in milliseconds
-#define lowerTempOffset 2 // Temperature difference that will trigger SSR on
+#define timeLimit 3600000 // value in milliseconds, 3600000 = 1 hour
+//#define lowerTempOffset 2 // Temperature difference that will trigger SSR on
 #define lowerChoiceTemp 36 // Lowest available temperature option
 #define upperChoiceTemp 76 // Highest available temperature option
 
@@ -25,10 +25,11 @@ float currTemp; // value to hold converted temperature value
 //*****************************************
 // PID setup
 //Define Variables we'll be connecting to
+
 double Setpoint, Input, Output;
 
 //Specify the links and initial tuning parameters
-PID myPID(&Input, &Output, &Setpoint,100,50,10, REVERSE);
+PID myPID(&Input, &Output, &Setpoint,200,100,10, REVERSE);
 
 int WindowSize = 5000;
 unsigned long windowStartTime; 
@@ -94,6 +95,24 @@ void loop(){
       currTemp = getTempFunc();
       sevenseg.print(currTemp,1);
       sevenseg.writeDisplay();
+    }
+     
+    // Check button1 to see if user is providing input
+    // to change setpoint 
+    if (digitalRead(button1) == LOW) {
+      delay(5); // crude debounce
+      if (digitalRead(button1) == LOW) { // if button is still pressed
+        sevenseg.clear();    
+        sevenseg.writeDisplay();
+        if (Setpoint >= lowerChoiceTemp & Setpoint < upperChoiceTemp) {
+          Setpoint = Setpoint++;    // raise Setpoint 1 degree
+      } else if (Setpoint >= upperChoiceTemp) {
+          Setpoint = lowerChoiceTemp; // return to lower limit
+      }
+        sevenseg.print(Setpoint, 0); // show new Setpoint value
+        sevenseg.writeDisplay();
+        delay(300);
+      }
     }
       
     // Non-PID version, in case the PID isn't useful
@@ -171,7 +190,7 @@ int tempSetFunc() { //lowTempFunc will return an integer when called
   sevenseg.writeDisplay();
 
   delay(1500);
-  sevenseg.print(tempLimit); // print starting temperature
+  sevenseg.print(Setpoint); // print starting temperature
   sevenseg.writeDisplay();
   sevenseg.blinkRate(1); // turn on blinking function
 
@@ -188,10 +207,10 @@ int tempSetFunc() { //lowTempFunc will return an integer when called
           if (tempLimit >= lowerChoiceTemp & tempLimit < upperChoiceTemp) {
             tempLimit = tempLimit + 2;
           } 
-          else if(tempLimit >= upperChoiceTemp) {
+          else if(tempLimit>= upperChoiceTemp) {
             tempLimit = lowerChoiceTemp;
           }
-          sevenseg.print(tempLimit);
+          sevenseg.print(tempLimit); 
           sevenseg.writeDisplay();
           startTime = millis(); //update startTime to give user more time 
           //to choose another value
