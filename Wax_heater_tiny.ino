@@ -190,7 +190,7 @@ int tempSetFunc() { //lowTempFunc will return an integer when called
   sevenseg.writeDisplay();
 
   delay(1500);
-  sevenseg.print(Setpoint); // print starting temperature
+  sevenseg.print(tempLimit); // print starting temperature
   sevenseg.writeDisplay();
   sevenseg.blinkRate(1); // turn on blinking function
 
