@@ -15,8 +15,8 @@ Tiny_7segment sevenseg = Tiny_7segment();
 #define aref_voltage 5.0 // analog reference voltage
 #define timeLimit 3600000 // value in milliseconds, 3600000 = 1 hour
 //#define lowerTempOffset 2 // Temperature difference that will trigger SSR on
-#define lowerChoiceTemp 36 // Lowest available temperature option
-#define upperChoiceTemp 76 // Highest available temperature option
+#define lowerChoiceTemp 60 // Lowest available temperature option
+#define upperChoiceTemp 84 // Highest available temperature option
 
 volatile int tempLimit = 60; // initial temperature target
 int rawAnalog; // value to hold raw analog value
@@ -114,25 +114,6 @@ void loop(){
         delay(300);
       }
     }
-      
-    // Non-PID version, in case the PID isn't useful
-//       if (millis() - loopTime > 1000) {
-//         loopTime = millis(); // update loopTime
-//         currTemp = getTempFunc(); // get current temperature 
-//          
-//          // Compare temperature to setpoint, turn solid state relay
-//          // on or off as necessary.
-//          if (currTemp < tempLimit - lowerTempOffset) {
-//            // If currTemp is less than the lower temperature limit, turn on heater
-//           digitalWrite(ssrPin, HIGH);
-//           digitalWrite(led, HIGH); 
-//          }
-//          else if (currTemp > tempLimit) {
-//           digitalWrite(ssrPin, LOW);
-//          digitalWrite(led, LOW);
-//          }
-//       }
-    //  
   } // end of while loop
 
   // When the millis counter exceeds the timeLimit,
