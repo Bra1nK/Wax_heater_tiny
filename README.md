@@ -7,7 +7,7 @@ can be found at
 http://www.scenelight.nl/?wpfb_dl=22
 
 It also uses the Tiny_LEDBackpack library found here:
-http://github.com/millerlp/TinyLEDBackpack
+http://github.com/millerlp/Tiny_LEDBackpack
 
 The wax heater project is described in more detail here:
 http://lukemiller.org/index.php/2012/10/attiny84-led-display-and-heater-project/
