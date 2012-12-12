@@ -1,5 +1,6 @@
 /* Wax_heater_tiny  Luke Miller Sep 2012
  An attempt to run my wax heater on an ATtiny84
+ Running on 8MHz internal oscillator
  */
 #include "TinyWireM.h"
 #include "Tiny_LEDBackpack.h"
@@ -16,7 +17,7 @@ Tiny_7segment sevenseg = Tiny_7segment();
 #define timeLimit 3600000 // value in milliseconds, 3600000 = 1 hour
 //#define lowerTempOffset 2 // Temperature difference that will trigger SSR on
 #define lowerChoiceTemp 60 // Lowest available temperature option
-#define upperChoiceTemp 84 // Highest available temperature option
+#define upperChoiceTemp 86 // Highest available temperature option
 
 volatile int tempLimit = 60; // initial temperature target
 int rawAnalog; // value to hold raw analog value
@@ -167,7 +168,7 @@ int tempSetFunc() { //lowTempFunc will return an integer when called
   sevenseg.writeDisplay();
   sevenseg.writeDigitRaw(0,109);  // 'S'
   sevenseg.writeDigitRaw(1,121);  // 'e'
-  sevenseg.writeDigitRaw(3,112);   // 't', alternately 70
+  sevenseg.writeDigitRaw(3,70);   // 't', alternately 112
   sevenseg.writeDisplay();
 
   delay(1500);
